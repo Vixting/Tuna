@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\data",
+    "\\lib",
+    "\\lib\\bot",
+    "\\lib\\cogs",
+    "\\lib\\db"
+  ],
+  "SelectedNode": "\\lib\\db\\db.py",
+  "PreviewInSolutionExplorer": false
+}

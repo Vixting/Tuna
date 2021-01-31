@@ -1,0 +1,14 @@
+
+
+{
+    "Application" : "Welcome",
+    "ID" : 0,
+    "Questions" : [
+        "Where are you from?",
+        "What is your Discord ID?",
+        "What name do you want? (Example James Black Ingame this would be CPT.J.Black) Make sure to put this as your nickname on discord.",
+        "What role would you prefer? (Rifleman Medic / Engineer / AA / AT Specialist / Marksman / Sniper / Jtac / Pilot)",
+        "Do you have any previous experience with any milsim?"
+
+    ]
+}
