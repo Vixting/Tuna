@@ -29,7 +29,7 @@ class Welcome(Cog):
             embed.set_thumbnail(url=member.avatar_url)
             embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
             await self.bot.get_channel(795328358648119327).send(embed=embed)
-            await member.add_roles(utils.get(member.guild.roles,name="Member"))
+            await member.add_roles(utils.get(member.guild.roles,name="New Recruit"))
 
         check = db.field("SELECT UserID FROM users Where UserID = ?", member.id)
 

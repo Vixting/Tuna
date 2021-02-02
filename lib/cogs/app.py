@@ -78,7 +78,7 @@ class Application(Cog):
                 reaction, user = await self.bot.wait_for("reaction_add", check=lambda reaction, user: user==ctx.author and reaction.emoji in [u"\u2611", u"\u274C"], timeout=600)
                 if reaction.emoji == u"\u2611":
 
-                        end_embed = timedOut("Application by {ctx.authir}", ctx, self.bot, f"ID: {ctx.author.id}")
+                        end_embed = timedOut(f"Application by {ctx.author}", ctx, self.bot, f"ID: {ctx.author.id}")
                         embed.set_thumbnail(url=ctx.author.avatar_url)
 
                         i=-1
