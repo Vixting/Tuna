@@ -1,1 +1,1 @@
-worker:Python chitti.py
+worker:python3 launcher.py
