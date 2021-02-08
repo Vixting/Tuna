@@ -12,7 +12,6 @@ gevent==20.9.0
 gevent-eventemitter==2.1
 greenlet==0.4.17
 idna==2.10
-mariadb==1.0.2
 multidict==4.7.6
 protobuf==3.13.0
 pycparser==2.20
