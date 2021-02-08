@@ -27,3 +27,7 @@ vdf==3.3
 yarl==1.5.1
 zope.event==4.5.0
 zope.interface==5.1.2
+unixodbc
+unixodbc-dev
+python-pyodbc
+libsqliteodbc
