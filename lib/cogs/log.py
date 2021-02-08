@@ -185,8 +185,6 @@ class log(Cog):
                 embed.set_footer(text=f'ID: {member.id}')
                 await self.bot.get_channel(800742053075091456).send(embed=embed)
 
-            
-        
 
 def setup(bot):
     bot.add_cog(log(bot))        
