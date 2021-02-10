@@ -1,5 +1,5 @@
 
-import mariadb
+
 from datetime import datetime
 from typing import Optional
 from discord.ext.commands import Cog
