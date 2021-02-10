@@ -19,7 +19,8 @@ from ..db import db
 from discord.ext.commands import when_mentioned_or
 
 OWNER_IDS = [300363459797712906]
-COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
+#COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
+COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
 IGNOR_EXCEPOPTIONS = (CommandNotFound, BadArgument)
 
 
