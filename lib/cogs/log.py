@@ -135,22 +135,22 @@ class log(Cog):
     @Cog.listener()
     async def on_message_delete(self, message):
 
-        #if not message.author.bot:
+        if not message.author.bot:
 
-        embed = Embed(title=f"Message Deletion",
-                    description = f"Deletion by: {message.author.display_name}",
-                    colour = message.author.colour,
-                    timestamp=datetime.datetime.now())
-        embed.set_thumbnail(url=message.author.avatar_url)
-        embed.set_footer(text=f'ID: {message.author.id}')
-        embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-        
-        fields = [("Content", message.content, False)]
-        
-        for name, value, inline in fields:
-            embed.add_field(name=name, value=value, inline=inline)
-        
-        await self.bot.get_channel(800742053075091456).send(embed=embed)
+            embed = Embed(title=f"Message Deletion",
+                        description = f"Deletion by: {message.author.display_name}",
+                        colour = message.author.colour,
+                        timestamp=datetime.datetime.now())
+            embed.set_thumbnail(url=message.author.avatar_url)
+            embed.set_footer(text=f'ID: {message.author.id}')
+            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+            
+            fields = [("Content", message.content, False)]
+            
+            for name, value, inline in fields:
+                embed.add_field(name=name, value=value, inline=inline)
+            
+            await self.bot.get_channel(800742053075091456).send(embed=embed)
     
     @Cog.listener()
     async def on_member_remove(self, member):
