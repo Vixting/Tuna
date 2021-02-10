@@ -8,4 +8,6 @@ cffi==1.14.3
 chardet==3.0.4
 discord==1.0.1
 discord.py==1.4.1
+gunicorn==19.0.0
+
 
