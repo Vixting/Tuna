@@ -96,9 +96,17 @@ class log(Cog):
             embed.set_footer(text=f'ID: {after.id}')
             embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
                 
-            
+            if (len([r.mention for r in before.roles]) > len([r.mention for r in after.roles])):
+                difference = set([r.mention for r in before.roles]) - set([r.mention for r in after.roles])
+                Type = "Removal"
+            else:
+                difference = set([r.mention for r in after.roles]) - set([r.mention for r in before.roles])
+                Type = "Addition"
+
+                
             fields = [("Before",", ".join([r.mention for r in before.roles]), False),
-                        ("After",", ".join([r.mention for r in after.roles]), False)]
+                        ("After",", ".join([r.mention for r in after.roles]), False),
+                        (Type, difference, False)]
             
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
