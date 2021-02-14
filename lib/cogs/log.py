@@ -123,16 +123,23 @@ class log(Cog):
             if before.content != after.content:
 
                 embed = Embed(title=f"Message Edit",
-                          description = f"Edit by: {after.author.display_name}",
+                          #description = f"Edit by: {after.author.display_name}",
                           colour = after.author.colour,
                           timestamp=datetime.datetime.now())
                 embed.set_thumbnail(url=after.author.avatar_url)
                 embed.set_footer(text=f'ID: {after.id}')
                 embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+
+                if (len([before.content]) > len([after.content])):
+                    difference = set([before.content]) - set([after.content])
+                else:
+                    difference = set([after.content]) - set([before.content])
+
                 
                 
                 fields = [("Before", before.content, False),
-                            ("After", after.content, False)]
+                            ("After", after.content, False),
+                            ("Difference", difference, False)]
                 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
@@ -146,7 +153,7 @@ class log(Cog):
         if not message.author.bot:
 
             embed = Embed(title=f"Message Deletion",
-                        description = f"Deletion by: {message.author.display_name}",
+                        description = f"Author: {message.author.display_name}",
                         colour = message.author.colour,
                         timestamp=datetime.datetime.now())
             embed.set_thumbnail(url=message.author.avatar_url)
