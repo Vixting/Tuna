@@ -15,15 +15,16 @@ jobs:
               uses: actions/checkout@v2
             - name: Setup Python
               uses: actions/setup-python@v2
-                with:
-                - python-version: '3.8.7'
+              with:
+
+                python-version: '3.8.7'
             - name: Install dependencies
               run: pip install -r requirements.txt
             - name: Push to Heroku
               uses: CDNievas/heroku-action@v1.0
               with:
-
-                - heroku_email: "vixting@gmail.com" # Edit this
+                
+                  heroku_email: "vixting@gmail.com" # Edit this
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}},
                   heroku_app_name: "discord-tuna-bot" # App name?
                   dynamicFiles: true
