@@ -9,19 +9,19 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Write Discord API Key
-              run: echo ${{secrets.DISCORD_API_KEY}} > "discord_api_key"
+              run: echo ${{secrets.token}} > "token"
             - name: Checkout Source
               uses: uses: actions/checkout@v2
             - name: Install dependencies
               uses: actions/setup-python@v2
               run: pip install -r requirements.txt
               with:
-                python-version: '3.x'
+                python-version: '3.8.7'
             - name: Push to Heroku
               uses: CDNievas/heroku-action@v1.0
               with:
-                - heroku_email: "lunatuna@tunatuna.com" # Edit this
+                - heroku_email: "vixting@gmail.com" # Edit this
                   heroku_api_key: ${{secrets.HEROKU_API_KEY}},
-                  heroku_app_name: "TunaBot" # App name?
+                  heroku_app_name: "discord-tuna-bot" # App name?
                   dynamicFiles: true
-                  procfile: "python3 run.py" # Bot start command
+                  procfile: "python3 launcher.py" # Bot start command
