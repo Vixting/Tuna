@@ -21,8 +21,8 @@ jobs:
               uses: akhileshns/heroku-deploy@v3.11.10
               with:
                 heroku_email: "vixting@gmail.com" # Edit this
-                heroku_api_key: ${{secrets.heroku_api_key}},
+                heroku_api_key: ${{secrets.HEROKU_API_KEY}},
                 heroku_app_name: "discord-tuna-bot" # App name?
                 procfile: Procfile
               env:
-                DISCORD_API_KEY: ${{secrets.token}}
+                DISCORD_API_KEY: ${{secrets.TOKEN}}
