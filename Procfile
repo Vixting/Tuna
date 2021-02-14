@@ -1,2 +1,2 @@
-web: python launcher.py
-worker: python launcher.py
+web: python3 launcher.py
+worker: python3 launcher.py

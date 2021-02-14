@@ -60,6 +60,7 @@ class Application(Cog):
                 await sent.delete()
             
         except TimeoutError:
+            cont = False
             await ctx.author.send(embed=timedOut("Query timed out", ctx, self.bot,f"ID: {ctx.author.id}"))
             await sent.delete()
             
