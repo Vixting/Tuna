@@ -71,8 +71,8 @@ class Bot(BotBase):
         #with open("./lib/bot/token", "r", encoding="utf-8") as tf:
             #self.TOKEN = tf.read()
         
-        self.token = environ.get("token")
-        
+        self.TOKEN = environ.get("token")
+
         print("running bot")
         super().run(self.TOKEN, reconnect=True)
         print("running bot")
