@@ -34,26 +34,26 @@ class Application(Cog):
                     for question in data["Questions"]:
                         if cont != True:
                             break
-                    
-                        embed = timedOut(question, ctx, self.bot, "This application will close in 20 minutes.")
-                        sent = await ctx.author.send(embed=embed)
-                        
-                        try:
-                            msg = await self.bot.wait_for(
-                                "message",
-                                timeout=1200,
-                                check =lambda message: message.author == ctx.author \
-                                    and not message.guild
-                                )
-                            if msg:
-                                contents = str(msg.content)
-                                answers.append(contents)
-                                
+                        else:
+                            embed = timedOut(question, ctx, self.bot, "This application will close in 20 minutes.")
+                            sent = await ctx.author.send(embed=embed)
+                            
+                            try:
+                                msg = await self.bot.wait_for(
+                                    "message",
+                                    timeout=1200,
+                                    check =lambda message: message.author == ctx.author \
+                                        and not message.guild
+                                    )
+                                if msg:
+                                    contents = str(msg.content)
+                                    answers.append(contents)
+                                    
 
-                        except TimeoutError:
-                            await ctx.author.send(embed=timedOut("Query timed out", ctx, self.bot,f"ID: {ctx.author.id}"))
-                            cont = False
-                        
+                            except TimeoutError:
+                                await ctx.author.send(embed=timedOut("Query timed out", ctx, self.bot,f"ID: {ctx.author.id}"))
+                                cont = False
+                            
             else:
                 cont = False
                 await ctx.author.send(embed=timedOut("Application cancelled", ctx, self.bot,f"ID: {ctx.author.id}"))
