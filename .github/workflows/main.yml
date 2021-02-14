@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+    push:
+        branches:
+            - master
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Write Discord API Key
+              run: echo ${{secrets.DISCORD_API_KEY}} > "discord_api_key"
+            - name: Checkout Source
+              uses: uses: actions/checkout@v2
+            - name: Install dependencies
+              uses: actions/setup-python@v2
+              run: pip install -r requirements.txt
+              with:
+                python-version: '3.x'
+            - name: Push to Heroku
+              uses: CDNievas/heroku-action@v1.0
+              with:
+                - heroku_email: "lunatuna@tunatuna.com" # Edit this
+                  heroku_api_key: ${{secrets.HEROKU_API_KEY}},
+                  heroku_app_name: "TunaBot" # App name?
+                  dynamicFiles: true
+                  procfile: "python3 run.py" # Bot start command
