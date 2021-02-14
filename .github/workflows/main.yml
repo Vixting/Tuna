@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Source
-              uses: actions/checkout@v2
+              uses: uses: actions/checkout@v2
             - name: Setup Python
               uses: actions/setup-python@v2
               with:
@@ -23,6 +23,7 @@ jobs:
                 heroku_email: "vixting@gmail.com" # Edit this
                 heroku_api_key: ${{secrets.HEROKU_API_KEY}},
                 heroku_app_name: "discord-tuna-bot" # App name?
-                procfile: Procfile
-              env:
-                DISCORD_API_KEY: ${{secrets.TOKEN}}
+                justlogin: true
+            - run: |
+                git remote add heroku git@heroku.com:discord-tuna-bot.git
+                git push heroku master
