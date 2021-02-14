@@ -130,19 +130,9 @@ class log(Cog):
                 embed.set_footer(text=f'ID: {after.id}')
                 embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
 
-                if (len([before.content]) > len([after.content])):
-                    difference = set([before.content]) - set([after.content])
-                else:
-                    difference = set([after.content]) - set([before.content])
-                difference = difference - set([before.content])
-                
-        
 
-                
-                
                 fields = [("Before", before.content, False),
-                            ("After", after.content, False),
-                            ("Difference", difference, False)]
+                            ("After", after.content, False)]
                 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
