@@ -1,3 +1,4 @@
+
 name: Deploy
 
 on:
@@ -11,9 +12,10 @@ jobs:
             - name: Write Discord API Key
               run: echo ${{secrets.token}} > "token"
             - name: Checkout Source
-              uses: actions/checkout@v2
-            - name: Install dependencies
+              uses: uses: actions/checkout@v2
+            - name: Setup Python
               uses: actions/setup-python@v2
+            - name: Install dependencies
               run: pip install -r requirements.txt
               with:
                 python-version: '3.8.7'
