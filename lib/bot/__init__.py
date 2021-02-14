@@ -20,8 +20,8 @@ from discord.ext.commands import when_mentioned_or
 
 OWNER_IDS = [300363459797712906]
 #COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
-#COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
-COGS = environ.get("token")
+COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
+s3_handler = environ.get("token")
 IGNOR_EXCEPOPTIONS = (CommandNotFound, BadArgument)
 
 
@@ -68,9 +68,11 @@ class Bot(BotBase):
         print("running setup...")
         self.setup()
 
-        with open("./lib/bot/token", "r", encoding="utf-8") as tf:
-            self.TOKEN = tf.read()
-
+        #with open("./lib/bot/token", "r", encoding="utf-8") as tf:
+            #self.TOKEN = tf.read()
+        
+        self.token = environ.get("token")
+        
         print("running bot")
         super().run(self.TOKEN, reconnect=True)
         print("running bot")
