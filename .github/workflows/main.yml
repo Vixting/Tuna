@@ -23,6 +23,6 @@ jobs:
                 heroku_email: "vixting@gmail.com" # Edit this
                 heroku_api_key: ${{secrets.heroku_api_key}},
                 heroku_app_name: "discord-tuna-bot" # App name?
-                procfile: "python3 launcher.py" # Bot start command
+                procfile: Procfile
               env:
                 DISCORD_API_KEY: ${{secrets.token}}
