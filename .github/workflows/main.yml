@@ -12,7 +12,7 @@ jobs:
             - name: Write Discord API Key
               run: echo ${{secrets.token}} > "token"
             - name: Checkout Source
-              uses: uses: actions/checkout@v2
+              uses: actions/checkout@v2
             - name: Setup Python
               uses: actions/setup-python@v2
             - name: Install dependencies
