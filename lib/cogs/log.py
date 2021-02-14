@@ -134,6 +134,9 @@ class log(Cog):
                     difference = set([before.content]) - set([after.content])
                 else:
                     difference = set([after.content]) - set([before.content])
+                difference = difference - set([before.content])
+                
+        
 
                 
                 
