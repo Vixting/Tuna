@@ -24,8 +24,8 @@ class log(Cog):
             embed.set_footer(text=f'ID: {after.id}')
             embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
             
-            fields = [("Before", before.name, False),
-                        ("After", after.name, False)]
+            fields = [("Before", before.display_name, False),
+                        ("After", after.display_name, False)]
             
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
@@ -146,7 +146,7 @@ class log(Cog):
         if not message.author.bot:
 
             embed = Embed(title=f"Message Deletion",
-                        description = f"Author: {message.author.display_name}",
+                        description = f"Author: {message.author.name}",
                         colour = message.author.colour,
                         timestamp=datetime.datetime.now())
             embed.set_thumbnail(url=message.author.avatar_url)
