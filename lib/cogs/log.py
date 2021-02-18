@@ -16,16 +16,10 @@ class log(Cog):
     @Cog.listener()
     async def on_user_update(self, before, after): #Should make this more oop, 1-2 function to handle embeds
         if before.name != after.name:
-
-            embed = Embed(title=f"Username change",
-                          colour = after.colour,
-                          timestamp=datetime.datetime.now())
-            embed.set_thumbnail(url=after.avatar_url)
-            embed.set_footer(text=f'ID: {after.id}')
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+            embed = templateEmbed("Username change", "", after)
             
-            fields = [("Before", before.display_name, False),
-                        ("After", after.display_name, False)]
+            fields = [("Before", f"`{before.display_name}`", False),
+                        ("After", f"`{after.display_name}`", False)]
             
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
@@ -33,12 +27,7 @@ class log(Cog):
             await self.bot.get_channel(800742053075091456).send(embed=embed)
         
         if before.discriminator != after.discriminator:
-            embed = Embed(title=f"Discriminator change",
-                          colour = after.colour,
-                          timestamp=datetime.datetime.now())
-            embed.set_thumbnail(url=after.avatar_url)
-            embed.set_footer(text=f'ID: {after.id}')
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+            embed = templateEmbed("Discriminator change", "", after)
             
             fields = [("Before", before.discriminator, False),
                         ("After", after.discriminator, False)]
@@ -52,16 +41,9 @@ class log(Cog):
 
 
         if before.avatar_url != after.avatar_url:
-
-            embed = Embed(title=f"Avatar Change",
-                          description = f"Edit by: {after.display_name}",
-                          colour = after.colour,
-                          timestamp=datetime.datetime.now())
-            embed.set_thumbnail(url=before.avatar_url)
+            embed = templateEmbed("Avatar change", f"Edit by: `{after.display_name} #{after.discriminator}`", False, before)
             embed.set_image(url=after.avatar_url)
 
-            embed.set_footer(text=f'ID: {after.id}')
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
             await self.bot.get_channel(800742053075091456).send(embed=embed)
             
 
@@ -71,15 +53,10 @@ class log(Cog):
     @Cog.listener()
     async def on_member_update(self, before, after):
         if before.display_name != after.display_name:
-            embed = Embed(title=f"Displayname Change ",
-                          colour = after.colour,
-                          timestamp=datetime.datetime.now())
-            embed.set_thumbnail(url=after.avatar_url)
-            embed.set_footer(text=f'ID: {after.id}')
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+            embed = templateEmbed(self.bot, "Displayname Change", "", after)
             
-            fields = [("Before", before.display_name, False),
-                        ("After", after.display_name, False)]
+            fields = [("Before", f"`{before.display_name} #{before.discriminator}`", False),
+                        ("After", f"`{after.display_name} #{before.discriminator}`", False)]
             
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
@@ -88,13 +65,8 @@ class log(Cog):
             await self.bot.get_channel(800742053075091456).send(embed=embed)
         
         elif before.roles != after.roles:
-            embed = Embed(title=f"Role Updates",
-                          description =f"User: {after.display_name}",
-                          colour = after.colour,
-                          timestamp=datetime.datetime.now())
-            embed.set_thumbnail(url=after.avatar_url)
-            embed.set_footer(text=f'ID: {after.id}')
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+            
+            embed = templateEmbed(self.bot, "Role Updates", f"User: `{after.display_name} #{after.discriminator}`", after)
                 
             if (len([r.mention for r in before.roles]) > len([r.mention for r in after.roles])):
                 difference = set([r.mention for r in before.roles]) - set([r.mention for r in after.roles])
@@ -121,18 +93,10 @@ class log(Cog):
     async def on_message_edit(self, before, after):
         if not after.author.bot:
             if before.content != after.content:
-
-                embed = Embed(title=f"Message Edit",
-                          #description = f"Edit by: {after.author.display_name}",
-                          colour = after.author.colour,
-                          timestamp=datetime.datetime.now())
-                embed.set_thumbnail(url=after.author.avatar_url)
-                embed.set_footer(text=f'ID: {after.id}')
-                embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-
-
+                embed = templateEmbed(self.bot, "Message Edit", f"Edit by: `{after.author.name} #{after.author.discriminator}`", False, after)
+ 
                 fields = [("Before", before.content, False),
-                            ("After", after.content, False)]
+                          ("After", after.content, False)]
                 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
@@ -144,17 +108,9 @@ class log(Cog):
     async def on_message_delete(self, message):
 
         if not message.author.bot:
-
-            embed = Embed(title=f"Message Deletion",
-                        description = f"Author: {message.author.name}",
-                        colour = message.author.colour,
-                        timestamp=datetime.datetime.now())
-            embed.set_thumbnail(url=message.author.avatar_url)
-            embed.set_footer(text=f'ID: {message.author.id}')
-            embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-            
+            embed = templateEmbed(self.bot, "Message deletion", f"Athor: `{message.author.name} #{message.author.discriminator}`", False, message)
+        
             fields = [("Content", message.content, False)]
-            
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
             
@@ -166,33 +122,31 @@ class log(Cog):
         guild = member.guild
         async for entry in guild.audit_logs(limit=1):
 
-            print(entry)
             if str(entry.action) == "AuditLogAction.kick":
 
-
-                embed = Embed(title="Member Kicked",
-                                      description=f"{member.mention} has been kicked by {entry.user.mention}",
-                                      colour=member.colour,
-                                      timestamp=datetime.datetime.now())
+                embed = templateEmbed(self.bot, "Member Kicked", f"{member.mention} has been kicked by {entry.user.mention}", member)
                 embed.add_field(name='Reason:', value=f"{entry.reason}", inline=True)
-                embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-                embed.set_thumbnail(url=member.avatar_url)
-                embed.set_footer(text=f'ID: {member.id}')
+             
                 await self.bot.get_channel(800742053075091456).send(embed=embed)
 
             elif str(entry.action) == "AuditLogAction.ban":
 
+                embed = templateEmbed(self.bot, "Member Banned", f"{member.mention} has been banned by {entry.user.mention}", member)
+                embed.add_field(name='Reason:', value=f"{entry.reason}", inline=True)    
 
-                embed = Embed(title="Member Banned",
-                                      description=f"{member.mention} has been banned by {entry.user.mention}",
-                                      colour=member.colour,
-                                      timestamp=datetime.datetime.now())
-                embed.add_field(name='Reason:', value=f"{entry.reason}", inline=True)
-                embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-                embed.set_thumbnail(url=member.avatar_url)
-                embed.set_footer(text=f'ID: {member.id}')
                 await self.bot.get_channel(800742053075091456).send(embed=embed)
 
+def templateEmbed(bot, title, description, member=False, message=False):
+    embed = Embed(title=title,
+                  description=description,
+                  colour=member.colour if member else message.author.colour,
+                  timestamp=datetime.datetime.now())
+
+    embed.set_thumbnail(url=member.avatar_url if member else message.author.avatar_url)
+    embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
+    embed.set_footer(text=f'ID: {member.id if member else message.author.id}')
+    return embed
+    
 
 def setup(bot):
     bot.add_cog(log(bot))        

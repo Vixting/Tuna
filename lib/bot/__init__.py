@@ -69,7 +69,7 @@ class Bot(BotBase):
         self.setup()
 
         #with open("./lib/bot/token", "r", encoding="utf-8") as tf:
-            #self.TOKEN = tf.read()
+         #   self.TOKEN = tf.read()
         
         self.TOKEN = environ.get("token")
 
