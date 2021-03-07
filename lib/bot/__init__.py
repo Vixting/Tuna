@@ -48,10 +48,12 @@ class ready(object):
 
 class Bot(BotBase):
     def __init__(self):
+        
         self.ready = False
         self.cogs_ready = ready()
         self.guild = None
         self.scheduler = AsyncIOScheduler()
+        self.scheduler.start()
 
         db.autosave(self.scheduler)
         super().__init__(command_prefix=get_prefix, owner_ids=OWNER_IDS)
@@ -69,7 +71,8 @@ class Bot(BotBase):
         self.setup()
 
         #with open("./lib/bot/token", "r", encoding="utf-8") as tf:
-         #   self.TOKEN = tf.read()
+
+            #self.TOKEN = tf.read()
         
         self.TOKEN = environ.get("token")
 
@@ -134,31 +137,10 @@ class Bot(BotBase):
     async def on_ready(self):
         if not self.ready:
             self.ready=True
+         
             self.guild = self.get_guild(303492362498473995)
             self.stdout = self.get_channel(755508987155316876)
             #await bot.change_presence(activity=discord.Game(name=""))
-
-
-            # self.scheduler.add_job(self.print_message, CronTrigger(day_of_week="sat", hour="18", minute="3"))
-            # self.scheduler.start()
-
-            #
-            #
-            # embed = Embed(title="Side Operation", description="Feel free to come along, but you don't have to, no need to inform HR either! Make sure your mods are up to date.",
-            # colour=0x7CFC00, timestamp=datetime.utcnow())
-            #
-            # fields = [("Time:", "Starts at 7:30 pm (GMT) wednesdays, though come along 15 minutes ealier in order to be ready please.", True)]
-            #
-            # for name, value, inline in fields:
-            #     embed.add_field(name=name,value=value,inline=inline)
-            #
-            # embed.set_footer(text="BSM")
-            # embed.set_author(name="BSM", icon_url=self.guild.icon_url)
-            # embed.set_thumbnail(url=self.guild.icon_url)
-            # embed.set_image(url="https://cdn.discordapp.com/attachments/720436278495281203/720437251359637564/mainop.jpg")
-            #
-            # await self.stdout.send(embed=embed)
-            # await channel.send(file=File("./data/images/mainop.jpg"))
 
             print("bot ready")
             while not self.cogs_ready.all_ready():
@@ -169,7 +151,7 @@ class Bot(BotBase):
 
         else:
             print("bot reconnected")
-
+    
     async def on_message(self, message):
         if not message.author.bot:
             await self.process_commands(message)

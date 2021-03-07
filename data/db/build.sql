@@ -27,3 +27,12 @@ CREATE TABLE IF NOT EXISTS mutes (
   EndTime text
 
 );
+
+CREATE TABLE IF NOT EXISTS schedules(
+  Title text,
+  Description text,
+  Day text,
+  Hour text,
+  Minute text,
+  Author text DEFAULT "Scheduled announcment"
+);
