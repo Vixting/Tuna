@@ -2,7 +2,7 @@
 
 
 import json
-from discord import channel
+from discord import channel, utils
 from discord.ext.commands import Cog
 from discord.ext.commands import CheckFailure
 from discord.ext.commands import command, has_permissions
@@ -19,6 +19,7 @@ class Application(Cog):
         """Opens application in direct message."""
         answers = []
         cont = True
+        logChannel = 795389697655570432
 
         embed = timedOut("Do you wish to proceed?", ctx, self.bot, "This query will close in two minutes.")
         sent = await ctx.author.send(embed=embed)
@@ -86,6 +87,11 @@ class Application(Cog):
                         for question in data["Questions"]:
                             i=i+1
                             end_embed.add_field(name=question, value=answers[i], inline=False)
+                        
+
+                        mention = utils.get(self.bot.get_guild(789865655444439040).roles, name="HR")
+                        await self.bot.get_channel(logChannel).send(f"{mention.mention}")
+                        
                         await self.bot.get_channel(795389697655570432).send(embed=end_embed)
 
                         await ctx.author.send(embed=timedOut("Thank you for your application", ctx, self.bot, f"ID: {ctx.author.id}"))
