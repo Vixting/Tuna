@@ -100,7 +100,7 @@ class Application(Cog):
                             
                             try:
                                 permed = ["HR", "Admin Perms"]
-                                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=lambda reaction, user: reaction.emoji in [u"\u2611", u"\u274C"] and utils.get(self.bot.get_guild(789865655444439040).roles, name="HR")  in user.roles and reaction.message.id == end_embed.id or utils.get(self.bot.get_guild(789865655444439040).roles, name="Admin Perms") in user.roles and reaction.message.id == end_embed.id)
+                                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: reaction.emoji in [u"\u2611", u"\u274C"] and utils.get(self.bot.get_guild(789865655444439040).roles, name="HR")  in user.roles and reaction.message.id == end_embed.id or utils.get(self.bot.get_guild(789865655444439040).roles, name="Admin Perms") in user.roles and reaction.message.id == end_embed.id)
                                 
                              
                                 if reaction.emoji == u"\u2611":
