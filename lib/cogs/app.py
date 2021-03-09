@@ -14,7 +14,7 @@ class Application(Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @command(name="appl", aliases=["t"])
+    @command(name="apply", aliases=["t"])
     async def apply(self, ctx):
         """Opens application in direct message."""
         if not utils.get(ctx.author.roles, name="Milsim"):
