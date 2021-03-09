@@ -19,8 +19,8 @@ from ..db import db
 from discord.ext.commands import when_mentioned_or
 
 OWNER_IDS = [300363459797712906]
-#COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
-COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
+COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
+#COGS = [path.split("/")[-1][:-3] for path in glob("./lib/cogs/*.py")] #will return python files from cog folder
 
 IGNOR_EXCEPOPTIONS = (CommandNotFound, BadArgument)
 
@@ -70,11 +70,11 @@ class Bot(BotBase):
         print("running setup...")
         self.setup()
 
-        #with open("./lib/bot/token", "r", encoding="utf-8") as tf:
+        with open("./lib/bot/token", "r", encoding="utf-8") as tf:
 
-            #self.TOKEN = tf.read()
+            self.TOKEN = tf.read()
         
-        self.TOKEN = environ.get("token")
+        #self.TOKEN = environ.get("token")
 
         print("running bot")
         super().run(self.TOKEN, reconnect=True)
@@ -100,12 +100,9 @@ class Bot(BotBase):
     async def on_disconnected(self):
         print("bot disconected")
 
-    async def print_message(self):
-        await self.stdout.send("I am a timed notification")
-
     async def on_error(self, err, *args, **kwargs):
         if err == "on_command_error":
-            await args[0].send("something went wrong")
+            await args[0].send("It broken lol.")
 
         await self.stdout.send("An error occured")
 
@@ -122,6 +119,9 @@ class Bot(BotBase):
 
         elif isinstance(exc, CommandOnCooldown):
             await ctx.send(f"That command is on {str(exc.cooldown.type.split('.')[-1])} cooldown. Try again {exc.retry_after:,.2f} seconds")
+        
+        elif isinstance(exc, TimeoutError):
+            await ctx.send("Time out error.")
 
 
         elif hasattr(exc, "original"): #checks for attribute original, raises that
