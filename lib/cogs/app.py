@@ -28,7 +28,7 @@ class Application(Cog):
             await sent.add_reaction(u"\u2611")
             await sent.add_reaction(u"\u274C")
             try:
-                reaction, user = await self.bot.wait_for("reaction_add", check=lambda reaction, user: user==ctx.author and reaction.emoji in [u"\u2611", u"\u274C"] and reaction.message.id == sent.id, timeout=120)
+                reaction, user = await self.bot.wait_for("reaction_add", check=lambda reaction, user: user==ctx.author and reaction.emoji in [u"\u2611", u"\u274C"] and reaction.message.id == sent.id)
                 if reaction.emoji == u"\u2611":
                     with open("./data/applications/Welcome") as f:
                         data = json.load(f)
