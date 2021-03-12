@@ -34,5 +34,14 @@ CREATE TABLE IF NOT EXISTS schedules(
   Day text,
   Hour text,
   Minute text,
-  Author text DEFAULT "Scheduled announcment"
+  Author text DEFAULT "Scheduled announcment",
+  emojis text
 );
+
+CREATE TABLE IF NOT EXISTS apps(
+  appName text,
+  UserID VARCHAR(32),
+  link text DEFAULT "NULL",
+  userName text DEFAULT "NULL"
+
+)

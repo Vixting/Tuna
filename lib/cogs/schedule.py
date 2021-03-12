@@ -39,13 +39,13 @@ class schedule(Cog):
         
         schedules = db.records("SELECT * FROM schedules")
         for schedule in schedules:
-            self.scheduler.add_job(self.announcment, CronTrigger(day_of_week=schedule[2],hour=schedule[3],minute=schedule[4]), (schedule[0], schedule[1]))
+            self.scheduler.add_job(self.announcment, CronTrigger(day_of_week=schedule[2],hour=schedule[3],minute=schedule[4]), (schedule[0], schedule[1], False, False, False, schedule[6]))
 
 
 
         self.scheduler.start() 
 
-    @command(name="announce", aliases=["an"])
+    @command(name="announce", aliases=["a"])
     @has_permissions(manage_messages=True)
     async def announce(self, ctx, member, title,*,description:Optional[str]=" "):
         """Announcment command, role must be able to view #announcments."""
@@ -54,37 +54,55 @@ class schedule(Cog):
         else:
             embed, file = await self.announcment(title, description, ctx.author.display_name, member, False)
             preview = await ctx.send(file=file,embed=embed)
+            reactions = []
+            def details(reactions):
+                details = Embed(
+                    title="Announcment details",
+                    description="Tick if you wish to send",
+                    colour=self.bot.user.colour,
+                    timestamp=datetime.datetime.now())
 
-            details = Embed(
-                title="Announcment details",
-                description="Tick if you wish to send",
-                colour=self.bot.user.colour,
-                timestamp=datetime.datetime.now())
+                embed.set_footer(text= f"This query will close in 2 minutes.")
+                
 
-            embed.set_footer(text= f"This query will close in 2 minutes.")
-
-            fields = [("Mentioning", f"`@{member}`" , True),
-                      ("Title:", f"`{title}`", True),
-                      ("Description:", f"`{description}`", True),
-                      ("Destination: ", f"`#Announcments`", True)]
+                fields = [("Mentioning", f"`@{member}`" , True),
+                        ("Title:", f"`{title}`", True),
+                        ("Description:", f"`{description}`", True),
+                        ("Destination: ", f"`#Announcments`", True),
+                        ("Emojis: ", f"{reactions}", True)]
+                
+                for name, value, inLine in fields:
+                    details.add_field(name=name, value=value, inline=inLine)
+                
+                return details
             
-            for name, value, inLine in fields:
-                details.add_field(name=name, value=value, inline=inLine)
-            
-            sent = await ctx.send(embed=details)
+            sent = await ctx.send(embed=details("N/A"))
 
             await sent.add_reaction(u"\u2611")
             await sent.add_reaction(u"\u274C")
 
             try:
-                reaction, user = await self.bot.wait_for("reaction_add", check=lambda reaction, user: user==ctx.author and reaction.emoji in [u"\u2611", u"\u274C"], timeout=600)
-                if reaction.emoji == u"\u2611":
-                    await self.announcment(title, description, ctx.author.display_name, member, True)
-                else:
-                    await ctx.send("Cancelling query")
+                reaction = False
+                while reaction != u"\u2611" or reaction != u"\u274C":
+                    reaction, user = await self.bot.wait_for("reaction_add", check=lambda reaction, user: user==ctx.author and reaction.message.id == sent.id , timeout=600)
+                    remove, user2 = await self.bot.wait_for("reaction_remove", check=lambda remove, user2: user2==ctx.author and reaction.message.id == sent.id, timeout=600)
 
-                    await sent.delete()
-                    await preview.delete()
+ 
+                    if remove.emoji in reactions:
+                        reactions.remove(remove.emoji)
+                        await sent.edit(embed=details(reactions))
+                    else:
+
+                        if reaction.emoji == u"\u2611":
+                            await self.announcment(title, description, ctx.author.display_name, member, True, reactions)
+                        elif reaction.emoji == u"\u274C":
+                            await ctx.send("Cancelling query")
+
+                            await sent.delete()
+                            await preview.delete()
+                        else:
+                            reactions.append(reaction.emoji)
+                            await sent.edit(embed=details(reactions))
             
             except TimeoutError:
                 await ctx.send("Query timedo out.")
@@ -122,13 +140,14 @@ class schedule(Cog):
                 }
 
         for schedule in schedules:
-            embed.add_field(name=f"`{schedule[0]}` - {schedule[1]}", value=f"scheduled for {days[schedule[2]]} at {schedule[3]}:{schedule[4]}", inline=False)
+            embed.add_field(name=f"`{schedule[0]}` - {schedule[1]} - {schedule[6]}", value=f"scheduled for {days[schedule[2]]} at {schedule[3]}:{schedule[4]}", inline=False)
         await ctx.send(embed=embed)
+        print(self.scheduler.print_jobs())
 
 
-    async def announcment(self, title, description, author=False, role=False, post=False):
+    async def announcment(self, title, description, author=False, role=False, post=False, emojis=False):
 
-        announcmentChannel = 795328151030464512
+        announcmentChannel = 810561241780715610
 
         img = "./data/images/announcement.png"
         font_path = "./data/fonts/roboto/Roboto-Black.ttf"
@@ -168,7 +187,11 @@ class schedule(Cog):
             if role:
                 mention = utils.get(self.bot.get_guild(789865655444439040).roles, name=role)
                 await self.bot.get_channel(announcmentChannel).send(f"{mention.mention}")
-            await self.bot.get_channel(announcmentChannel).send(file=file, embed=embed)
+            sent = await self.bot.get_channel(announcmentChannel).send(file=file, embed=embed)
+            print(emojis)
+            if emojis:
+                for emoji in emojis:
+                    await sent.add_reaction(emoji)
         else:
             embed.title = "Preview"
             return embed, file
