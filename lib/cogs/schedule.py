@@ -147,7 +147,7 @@ class schedule(Cog):
 
     async def announcment(self, title, description, author=False, role=False, post=False, emojis=False):
 
-        announcmentChannel = 810561241780715610
+        announcmentChannel = 795328151030464512
 
         img = "./data/images/announcement.png"
         font_path = "./data/fonts/roboto/Roboto-Black.ttf"
